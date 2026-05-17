@@ -2,7 +2,7 @@
 // Inindo trainer — slider-driven retuning of the per-level EXP requirement
 // tables baked into PRG ROM at $01539E (main char) and $015402 (helpers).
 //
-// Reverse-engineered values are hardcoded below; see README.md.
+// Reverse-engineered values are hardcoded below; see DEBUGGING_NOTES.md.
 // ---------------------------------------------------------------------------
 
 const TABLE1_OFFSET = 0x01539E; // ninja class (the protagonist's class)
@@ -25,7 +25,7 @@ const TABLE_LEN     = 50;       // each table has 50 16-bit LE entries
 // physically can't overflow past 255. HP/MP are recomputed from the level
 // at every level-up event, so they hold once the level reaches its 99 cap.
 //
-// See README.md § "Errata: the SNES version natively caps level at 99" for
+// See DEBUGGING_NOTES.md § "Errata: the SNES version natively caps level at 99" for
 // the empirical trace and the full investigation.
 //
 // This editor therefore only patches the per-level EXP requirement tables.
