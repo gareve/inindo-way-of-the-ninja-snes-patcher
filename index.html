@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patch for SNES Inindo - Way of the Ninja (US) - De-grinder</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+  <div class="kanji-bg" aria-hidden="true">忍</div>
+  <h1>Patch for SNES Inindo - Way of the Ninja (US) - De-grinder</h1>
+  <p class="tagline">Tune the experience grind, ninja-style</p>
+</header>
+
+<main>
+  <section class="card about">
+    <h2>About the game</h2>
+    <p>
+      <strong>Inindo: Way of the Ninja</strong> (Koei, 1991 JP / 1994 US) is a turn-based RPG set in late-Sengoku Japan.
+      You play a ninja whose clan was wiped out by Oda Nobunaga, and the game blends a party-based JRPG combat system
+      with classic Koei strategy mechanics — recruit historical generals, take provinces, raise armies, navigate
+      regional politics. The systems are unique, the atmosphere is fantastic, the soundtrack slaps.
+    </p>
+    <p>
+      The catch: the level curve is <em>brutal</em>. Once your party crosses level 50, every additional level demands
+      a flat <strong>45 000 EXP</strong>. This page lets you patch the per-level requirement curve to taste —
+      without writing a single line of code. The SNES port already caps level at 99 and the attribute fields are
+      bounded, so there's nothing else to touch in the ROM.
+    </p>
+  </section>
+
+  <section class="card legal">
+    <h2>Before you patch</h2>
+    <p>
+      This page does <strong>not</strong> host or distribute any Inindo ROM. To use the &ldquo;download patched ROM&rdquo;
+      button you must supply a copy you obtained legally (e.g. dumped from a cartridge you own). All patching happens
+      <strong>in your browser</strong> — your file never leaves the page.
+    </p>
+    <p>
+      The patch targets the <strong>US release</strong> (<em>Inindo: Way of the Ninja</em>, SNES, 1994). The offsets
+      were reverse-engineered against that ROM; the Japanese version (<em>Inindou: Datou Nobunaga</em>) lays out its
+      tables differently and will be rejected by the &ldquo;looks like Inindo&rdquo; header check.
+    </p>
+    <p class="hint">
+      If you can&rsquo;t share the ROM with the page, you can still download an <strong>IPS patch</strong> and apply
+      it locally with any IPS tool (e.g. Floating IPS, Lunar IPS, the <code>flips</code> CLI).
+    </p>
+  </section>
+
+  <section class="card patcher">
+    <h2>Patch settings</h2>
+
+    <div class="rom-input">
+      <label for="rom-file">ROM file <span class="muted">(optional &mdash; only needed for the patched-ROM download)</span></label>
+      <input type="file" id="rom-file" accept=".sfc,.smc">
+      <p class="rom-status" id="rom-status">No ROM loaded.</p>
+    </div>
+
+    <div class="slider-block">
+      <div class="slider-labels">
+        <span class="easy">EASY</span>
+        <span class="middle muted">balanced</span>
+        <span class="grindy">GRINDY</span>
+      </div>
+      <input type="range" id="difficulty" min="0" max="100" value="100" step="1">
+      <p class="slider-explainer" id="slider-explainer"></p>
+    </div>
+
+    <details class="patch-summary">
+      <summary>What does the patch actually do?</summary>
+      <ul>
+        <li>Overwrites <strong>Table 1</strong> (50 × 16-bit LE words at file offset <code>0x01539E</code> &mdash; ninja class).</li>
+        <li>Overwrites <strong>Table 2</strong> (50 × 16-bit LE words at file offset <code>0x015402</code> &mdash; monk / onmyoji classes).</li>
+        <li><strong>Patched-ROM download only:</strong> recomputes the SNES internal checksum and complement at <code>0x7FDC..0x7FDF</code> so ROM tools stop flagging the file. (Cosmetic &mdash; emulators and real hardware don&rsquo;t verify it.)</li>
+        <li><strong>IPS download:</strong> one record (the threshold tables), no checksum patch (computing it would require the full ROM).</li>
+        <li>Nothing else is touched &mdash; no graphics, no music, no level-cap or attribute patches, no other data.</li>
+      </ul>
+    </details>
+
+    <div class="actions">
+      <button id="download-rom" disabled title="Upload a ROM file first">Download patched ROM</button>
+      <button id="download-ips">Download IPS patch</button>
+    </div>
+  </section>
+
+  <section class="tables">
+    <div class="table-pane">
+      <h3>Per-level EXP requirements</h3>
+      <p class="table-legend">
+        <span class="val orig">old</span>
+        <span class="arrow">&rarr;</span>
+        <span class="val new">new</span>
+        &nbsp;&middot;&nbsp;
+        <span class="val same">unchanged</span>
+      </p>
+      <div class="table-scroll">
+        <table id="table-combined"></table>
+      </div>
+    </div>
+  </section>
+
+  <section class="card cap">
+    <h2>No level-cap patch needed</h2>
+    <p>
+      We empirically confirmed that the SNES port of Inindo <strong>natively caps level at 99</strong>: the game's
+      own orchestrator passes a cap of <code>$63</code> (= 99) to its clamped-add primitive every time it tries to
+      bump the level field, so the level physically cannot climb past 99 through normal play.
+    </p>
+    <p>
+      <strong>Character attributes are safe too.</strong> Intel, Speed, Luck, and Power are 8-bit fields and the
+      game's orchestrator passes a cap of <code>$FF</code> (= 255) for them &mdash; they can't overflow. HP and MP
+      are recomputed from the level at every level-up event, so once the level reaches its 99 cap, those fields
+      hold automatically.
+    </p>
+    <p>
+      The widely-cited "post-100 crash" warning (e.g. secky.org) is for the <strong>PC-98 original</strong>, not
+      this SNES port. Koei evidently fixed the level-table overflow when they ported the game; the bug isn't
+      reachable on SNES. So this editor only patches the per-level EXP requirement tables &mdash; no level cap, no
+      attribute cap, nothing else.
+    </p>
+    <p class="hint">
+      See <a href="README.md">README.md</a> &sect; "Errata: the SNES version natively caps level at 99" for the
+      full trace and the byte-diff against the original ROM that confirmed nothing else needed touching.
+    </p>
+  </section>
+
+  <section class="card classes">
+    <h2>Two tables, picked by class</h2>
+    <p>
+      The game stores <strong>two</strong> per-level EXP curves in the ROM and picks one based on the
+      <em>class</em> of the levelling character &mdash; not the party slot they sit in.
+    </p>
+    <ul>
+      <li>
+        <strong>Table 1</strong> &mdash; <strong>ninja</strong> class. The protagonist is always a ninja, and
+        any other ninja party members use this curve too. (Verified end-to-end: live trace of the level-up code,
+        plus a successful patched-ROM test.)
+      </li>
+      <li>
+        <strong>Table 2</strong> &mdash; the spell-casting / priestly classes: <strong>monk (僧)</strong> and
+        <strong>onmyoji (陰陽師)</strong>. Slightly easier curve early on (15 EXP for L1&rarr;2 vs 18), converges
+        with Table 1 at the level-50 cap of 45 000.
+      </li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <p>Built from the <a href="README.md">Inindo experience-table reverse-engineering notes</a>.</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
