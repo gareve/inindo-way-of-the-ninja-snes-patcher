@@ -1,4 +1,4 @@
-# Inindo: Way of the Ninja — De-grinder Patch (SNES, US)
+# Inindo: Way of the Ninja — De-grinder Patcher (SNES, US)
 
 A browser-based ROM/IPS patcher that retunes the per-level EXP requirement
 curve in **Inindo: Way of the Ninja** (SNES, US, 1994). Drag a slider
