@@ -12,6 +12,8 @@ curve), then download either a patched `.sfc` ROM or an `.ips` patch file.
 Everything runs in your browser — no ROM is uploaded or stored anywhere.
 You supply your own legally-obtained copy of the game.
 
+![EASY mode in action: only 1 EXP needed to level up](images/screenshot-easy-mode.png)
+
 ## How it works
 
 The patch overwrites two per-level EXP tables baked into the SNES ROM:

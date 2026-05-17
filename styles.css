@@ -107,6 +107,25 @@ main {
 .card.classes li { color: var(--fg); margin-bottom: 0.3rem; }
 .card.classes li::marker { color: var(--good); }
 
+.screenshot {
+  margin: 1.2rem auto 0;
+  text-align: center;
+}
+.screenshot img {
+  max-width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: var(--shadow);
+}
+.screenshot figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+  font-style: italic;
+}
+
 h2 {
   margin: 0 0 1rem;
   font-family: var(--serif);
