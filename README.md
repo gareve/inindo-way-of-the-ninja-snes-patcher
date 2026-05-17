@@ -41,12 +41,12 @@ against the original ROM.
 - `index.html`, `styles.css`, `app.js` — the patcher UI and logic.
 - [`DEBUGGING_NOTES.md`](DEBUGGING_NOTES.md) — long-form
   reverse-engineering notes (where the offsets came from, what was tried,
-  what was ruled out).
+  what was ruled out). **Heads-up:** these notes aren't well organized
+  &mdash; they're a working journal more than a tidy write-up &mdash; but
+  they should still give curious readers useful hints to chase.
 
 ## Bugs & feature requests
 
 Please [open an issue](https://github.com/gareve/inindo-way-of-the-ninja-snes-patcher/issues/new)
 for bug reports or feature requests. For bug reports, **please attach a
 save state** if possible — it makes reproduction dramatically easier.
-</content>
-</invoke>
