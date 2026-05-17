@@ -42,5 +42,11 @@ against the original ROM.
 - [`DEBUGGING_NOTES.md`](DEBUGGING_NOTES.md) — long-form
   reverse-engineering notes (where the offsets came from, what was tried,
   what was ruled out).
+
+## Bugs & feature requests
+
+Please [open an issue](https://github.com/gareve/inindo-way-of-the-ninja-snes-patcher/issues/new)
+for bug reports or feature requests. For bug reports, **please attach a
+save state** if possible — it makes reproduction dramatically easier.
 </content>
 </invoke>
